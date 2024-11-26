@@ -18,8 +18,12 @@ class _TaskPageState extends State<TaskPage> {
 
   @override
   void initState() {
-    _databaseHelper.database;
     super.initState();
+    _initializeDatabaseAndTasks();
+  }
+
+  void _initializeDatabaseAndTasks() async {
+    await _databaseHelper.database;
     getTasks();
   }
 
@@ -29,6 +33,7 @@ class _TaskPageState extends State<TaskPage> {
     } else {
       _tasks = await _databaseHelper.getTasks();
     }
+    return setState(() {});
   }
 
   void _deleteTasks() async {

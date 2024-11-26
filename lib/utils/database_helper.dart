@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:todolist/model/task.dart';
 
 class DatabaseHelper {
-  late Database? _db;
+  late Database _db;
   static final DatabaseHelper instance = DatabaseHelper._instance();
 
   DatabaseHelper._instance();
@@ -14,11 +14,7 @@ class DatabaseHelper {
   }
 
   Future<Database> get database async {
-    if (_db != null) {
-      return _db!;
-    }
-    _db = await _initDb();
-    return _db!;
+    return _db = await _initDb();
   }
 
   void _onCreate(Database db, int version) async {
@@ -34,29 +30,29 @@ class DatabaseHelper {
   }
 
   Future<List<Map<String, dynamic>>> getTaskMapList() async {
-    return await _db!.query("tasks");
+    return await _db.query("tasks");
   }
 
   Future<int> insertTask(Task task) async {
-    return await _db!.insert("tasks", task.toMap());
+    return await _db.insert("tasks", task.toMap());
   }
 
   Future<int> updateTask(id, int isDone) async {
-    return await _db!
-        .update("tasks", {"isDone": isDone}, where: "id = ?", whereArgs: [id]);
+    return await _db.update("tasks", {"isDone": isDone},
+        where: "id = ?", whereArgs: [id]);
   }
 
   Future<int> deleteTask(int id) async {
-    return await _db!.delete("tasks", where: "id = ?", whereArgs: [id]);
+    return await _db.delete("tasks", where: "id = ?", whereArgs: [id]);
   }
 
   Future<int> deleteAllTasks() async {
-    return await _db!.delete("tasks");
+    return await _db.delete("tasks");
   }
 
   Future<int> getCount() async {
     List<Map<String, dynamic>> x =
-        await _db!.rawQuery("SELECT COUNT (*) from tasks");
+        await _db.rawQuery("SELECT COUNT (*) from tasks");
     int result = Sqflite.firstIntValue(x)!;
     return result;
   }
@@ -72,7 +68,7 @@ class DatabaseHelper {
   }
 
   Future<List<Task>> getPendingTasks() async {
-    var taskMapList = await _db!.query("tasks", where: "isDone = 0");
+    var taskMapList = await _db.query("tasks", where: "isDone = 0");
     int count = taskMapList.length;
     List<Task> taskList = <Task>[];
     for (int i = 0; i < count; i++) {
