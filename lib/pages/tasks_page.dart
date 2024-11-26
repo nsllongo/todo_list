@@ -24,7 +24,9 @@ class _TaskPageState extends State<TaskPage> {
 
   void _initializeDatabaseAndTasks() async {
     await _databaseHelper.database;
-    getTasks();
+    setState(() {
+      getTasks();
+    });
   }
 
   void getTasks() async {
@@ -33,7 +35,6 @@ class _TaskPageState extends State<TaskPage> {
     } else {
       _tasks = await _databaseHelper.getTasks();
     }
-    return setState(() {});
   }
 
   void _deleteTasks() async {
